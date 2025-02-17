@@ -10,11 +10,11 @@ function getWebviewContent(
   extensionPath: string,
   htmlFileName: string
 ) {
-  const htmlPath = path.join(extensionPath, "webview-ui", "dist", htmlFileName);
+  const htmlPath = path.join(extensionPath, "webview-ui", "client", "dist", htmlFileName);
   let html = fs.readFileSync(htmlPath, "utf-8");
 
   // 获取正确的资源路径
-  const scriptPathOnDisk = path.join(extensionPath, "webview-ui", "dist");
+  const scriptPathOnDisk = path.join(extensionPath, "webview-ui", "client", "dist");
   html = html.replace(/(href|src)="\/([^"]*)"/g, (match, p1, p2) => {
     // 处理相对路径
     const uri = vscode.Uri.file(path.join(scriptPathOnDisk, p2));
@@ -56,7 +56,7 @@ class InspectorSidebarProvider implements vscode.WebviewViewProvider {
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
-    return getWebviewContent(webview, this._extensionUri.fsPath, "index.html");
+    return getWebviewContent(webview, this._extensionUri.fsPath, "sidebar.html");
   }
 }
 
