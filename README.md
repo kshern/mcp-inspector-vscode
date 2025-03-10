@@ -1,71 +1,131 @@
-# mcp-inspector-vsocde README
+# MCP Inspector VSCode Extension
 
-This is the README for your extension "mcp-inspector-vsocde". After writing up a brief description, we recommend including the following sections.
+[中文文档](README_ZH.md)
+
+MCP Inspector is a VSCode extension designed for visual testing and debugging of MCP (Model Control Protocol) servers. This extension provides a user-friendly interface to help developers test, debug, and monitor MCP server behavior more efficiently.
+
+The WebView UI part of this extension is based on the [Model Context Protocol Inspector](https://github.com/modelcontextprotocol/inspector) project, which is the official debugging and testing tool for the Model Context Protocol.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Visual Interface**: Display MCP server requests and responses through an intuitive WebView interface
+- **Real-time Monitoring**: Monitor MCP server activities and status in real-time
+- **Request Testing**: Provide an interface for building and sending test requests to MCP servers
+- **Response Analysis**: Format and display response data for easy analysis and debugging
+- **Server Management**: Built-in server management functions to start and stop MCP servers directly from VSCode
+- **Automatic Port Allocation**: Automatically find available ports to avoid port conflicts
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![MCP Inspector Interface](resources/mcp.png)
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- Visual Studio Code 1.97.0 or higher
+- Node.js and npm (for running the built-in server)
+
+## Installation
+
+1. Install from the VSCode Extension Marketplace, or
+2. Download the `.vsix` file and install via VSCode's "Install from VSIX..." option, or
+3. Clone the repository and build manually:
+
+```bash
+git clone https://github.com/kshern/mcp-inspector-vsocde.git
+cd mcp-inspector-vsocde
+npm install
+npm run package
+```
+
+## Usage
+
+1. Click the MCP Inspector icon in the VSCode activity bar to open the extension
+2. Click the "Start MCP Inspector Server" command to start the server
+3. Use the WebView interface to build and send requests to the MCP server
+4. Analyze response results and server behavior
+5. When finished, click the "Stop MCP Inspector Server" command to stop the server
+
+### Available Commands
+
+- `MCP Inspector: Open MCP Inspector` - Open the main interface
+- `MCP Inspector: Start MCP Inspector Server` - Start the proxy server
+- `MCP Inspector: Stop MCP Inspector Server` - Stop the proxy server
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Currently, this extension has no configurable settings. Future versions may add the following settings:
 
-For example:
+- `mcpInspector.defaultPort`: Set the default port number
+- `mcpInspector.autoStartServer`: Automatically start the server when the extension is launched
 
-This extension contributes the following settings:
+## Project Structure
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+```
+mcp-inspector-vsocde/
+├── src/                 # Extension source code
+├── webview-ui/          # WebView UI code (based on github.com/modelcontextprotocol/inspector)
+│   ├── client/          # Frontend client code
+│   └── server/          # Proxy server code
+├── resources/           # Resource files
+└── dist/                # Compiled code
+```
+
+## Technical Implementation
+
+This extension consists of two parts:
+
+1. **VSCode Extension Part**: Responsible for creating WebViews in VSCode, managing server processes, and handling user interface interactions
+2. **WebView UI Part**: Based on the [Model Context Protocol Inspector](https://github.com/modelcontextprotocol/inspector) project, providing an intuitive user interface for testing and debugging MCP servers
+
+By integrating the official MCP Inspector tool into VSCode, this extension provides developers with a more convenient experience for MCP server development and testing.
+
+## Development Guide
+
+### Build and Debug
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Open the project in VSCode
+4. Press F5 to start a debugging session
+
+### Build the Extension
+
+```bash
+npm run package
+```
+
+This will generate compiled code in the `dist` directory.
+
+## Contributing
+
+Contributions of code, issue reports, or improvement suggestions are welcome. Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Submit a Pull Request
+
+## Acknowledgements
+
+Special thanks to the [Model Context Protocol](https://github.com/modelcontextprotocol) team for developing the [MCP Inspector](https://github.com/modelcontextprotocol/inspector) project, which the WebView UI part of this extension is based on.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- In some environments, the server may need to be manually restarted to work properly
+- Multiple MCP server debugging is not currently supported
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
+- Initial release
+- Basic MCP server testing functionality
+- WebView UI interface
+- Server start and stop functionality
 
-Initial release of ...
+## License
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+[MIT](LICENSE)
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Enjoy using MCP Inspector!**
