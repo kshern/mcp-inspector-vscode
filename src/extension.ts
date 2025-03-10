@@ -86,6 +86,60 @@ class ServerManager {
     return startPort;
   }
 
+  // 检查并安装必要的依赖项
+  private async installDependencies(serverDir: string): Promise<boolean> {
+    this.outputChannel.appendLine("检查并安装必要的依赖项...");
+    
+    // 首先安装根目录依赖项
+    const rootDir = path.join(serverDir, "..");
+    this.outputChannel.appendLine("安装根目录依赖项...");
+    
+    try {
+      // 安装根目录依赖项
+      await this.runCommand("npm", ["install"], rootDir);
+      
+      // 安装服务器依赖项
+      this.outputChannel.appendLine("安装服务器依赖项...");
+      await this.runCommand("npm", ["install"], serverDir);
+      
+      // 安装 TypeScript 相关依赖项
+      this.outputChannel.appendLine("安装 TypeScript 依赖项...");
+      await this.runCommand("npm", ["install", "typescript", "@types/node", "@types/express", "@types/cors", "@types/ws", "--save-dev"], serverDir);
+      
+      this.outputChannel.appendLine("依赖项安装成功");
+      return true;
+    } catch (error) {
+      this.outputChannel.appendLine(`依赖项安装失败：${error}`);
+      return false;
+    }
+  }
+  
+  // 运行命令的辅助方法
+  private async runCommand(command: string, args: string[], cwd: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const process = childProcess.spawn(command, args, {
+        cwd,
+        shell: true
+      });
+
+      process.stdout.on("data", (data: Buffer) => {
+        this.outputChannel.append(data.toString());
+      });
+
+      process.stderr.on("data", (data: Buffer) => {
+        this.outputChannel.append(data.toString());
+      });
+
+      process.on("exit", (code: number | null) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`命令执行失败，退出码：${code}`));
+        }
+      });
+    });
+  }
+
   // 启动服务器
   public async startServer(extensionPath: string): Promise<boolean> {
     if (this.isServerRunning) {
@@ -110,13 +164,25 @@ class ServerManager {
         return false;
       }
 
-      // 检查服务器构建目录是否存在，如果不存在则构建
-      const buildDir = path.join(serverDir, "build");
-      if (!fs.existsSync(buildDir)) {
-        this.outputChannel.appendLine("服务器尚未构建，正在构建...");
-        await this.buildServer(serverDir);
+      // 安装必要的依赖项
+      const dependenciesInstalled = await this.installDependencies(serverDir);
+      if (!dependenciesInstalled) {
+        this.outputChannel.appendLine("安装依赖项失败，无法启动服务器");
+        vscode.window.showErrorMessage("安装 MCP Inspector 服务器依赖项失败");
+        return false;
       }
 
+      // 检查 build/index.js 文件是否存在
+      const indexJsPath = path.join(serverDir, "build", "index.js");
+      if (!fs.existsSync(indexJsPath)) {
+        this.outputChannel.appendLine("错误：找不到服务器入口文件 build/index.js");
+        vscode.window.showErrorMessage("找不到 MCP Inspector 服务器入口文件");
+        return false;
+      }
+
+      // 直接启动服务器，跳过构建步骤
+      this.outputChannel.appendLine("直接启动服务器，跳过构建步骤...");
+      
       // 启动服务器进程
       this.serverProcess = childProcess.spawn("node", ["build/index.js"], {
         cwd: serverDir,
@@ -178,34 +244,6 @@ class ServerManager {
       vscode.window.showErrorMessage(`启动 MCP Inspector 服务器时出错：${error}`);
       return false;
     }
-  }
-
-  // 构建服务器
-  private async buildServer(serverDir: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const buildProcess = childProcess.spawn("npm", ["run", "build"], {
-        cwd: serverDir,
-        shell: true
-      });
-
-      buildProcess.stdout.on("data", (data: Buffer) => {
-        this.outputChannel.append(data.toString());
-      });
-
-      buildProcess.stderr.on("data", (data: Buffer) => {
-        this.outputChannel.append(data.toString());
-      });
-
-      buildProcess.on("exit", (code: number | null) => {
-        if (code === 0) {
-          this.outputChannel.appendLine("服务器构建成功");
-          resolve();
-        } else {
-          this.outputChannel.appendLine(`服务器构建失败，退出码：${code}`);
-          reject(new Error(`构建失败，退出码：${code}`));
-        }
-      });
-    });
   }
 
   // 停止服务器

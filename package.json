@@ -2,7 +2,12 @@
   "name": "mcp-inspector",
   "displayName": "mcp-inspector",
   "description": "Extension visual testing tool for MCP servers of vscode",
-  "version": "0.0.1",
+  "version": "0.0.3",
+  "publisher": "kshern89",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kshern/mcp-inspector-vsocde.git"
+  },
   "engines": {
     "vscode": "^1.97.0"
   },
