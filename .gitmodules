@@ -1,0 +1,3 @@
+[submodule "webview-ui"]
+	path = webview-ui
+	url = https://github.com/kshern/inspector
