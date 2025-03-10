@@ -14,8 +14,17 @@
   "contributes": {
     "commands": [
       {
-        "command": "mcp-inspector.helloWorld",
-        "title": "Hello World"
+        "command": "mcp-inspector.openWebview",
+        "title": "打开 MCP Inspector",
+        "icon": "resources/mcp.png"
+      },
+      {
+        "command": "mcp-inspector.startServer",
+        "title": "启动 MCP Inspector 服务器"
+      },
+      {
+        "command": "mcp-inspector.stopServer",
+        "title": "停止 MCP Inspector 服务器"
       }
     ],
     "viewsContainers": {
@@ -23,17 +32,15 @@
         {
           "id": "mcp-inspector",
           "title": "MCP Inspector",
-          "icon": "resources/inspector.svg"
+          "icon": "resources/mcp.png"
         }
       ]
     },
     "views": {
       "mcp-inspector": [
         {
-          "type": "webview",
-          "id": "mcp-inspector-sidebar",
-          "name": "Inspector",
-          "icon": "resources/inspector.svg"
+          "id": "mcp-inspector-view",
+          "name": "MCP Inspector"
         }
       ]
     }
