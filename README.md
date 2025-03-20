@@ -48,13 +48,26 @@ npm run package
 - `MCP Inspector: Open MCP Inspector` - Open the main interface
 - `MCP Inspector: Start MCP Inspector Server` - Start the proxy server
 - `MCP Inspector: Stop MCP Inspector Server` - Stop the proxy server
+- `MCP Inspector: Clean NPM Cache and Dependencies` - Clean npm cache and dependencies when installation issues occur
 
-## Extension Settings
+### Extension Settings
 
-Currently, this extension has no configurable settings. Future versions may add the following settings:
+This extension contributes the following settings:
 
-- `mcpInspector.defaultPort`: Set the default port number
-- `mcpInspector.autoStartServer`: Automatically start the server when the extension is launched
+- `mcp-inspector.serverPort`: Port number used by the MCP Inspector server (default: 3000). If unavailable, it will automatically find another port.
+- `mcp-inspector.autoStartServer`: Whether to automatically start the MCP Inspector server when the extension activates (default: true).
+- `mcp-inspector.installDependencies`: Whether to automatically install missing dependencies when starting the server for the first time (default: true).
+- `mcp-inspector.preInitializeOnActivation`: Whether to automatically install dependencies and build the server in the background when the extension activates (default: true). This speeds up the first server start.
+- `mcp-inspector.serverStartTimeout`: Server startup timeout in milliseconds (default: 30000).
+
+## Troubleshooting
+
+If you encounter issues with the server not starting:
+
+1. Try using the "Clean NPM Cache and Dependencies" command from the command palette
+2. Check the MCP Inspector output channel for detailed error messages
+3. Ensure Node.js and npm are properly installed and accessible
+4. If permission issues occur, try running VSCode with administrator privileges
 
 ## Project Structure
 

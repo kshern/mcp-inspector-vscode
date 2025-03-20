@@ -30,6 +30,10 @@
       {
         "command": "mcp-inspector.stopServer",
         "title": "停止 MCP Inspector 服务器"
+      },
+      {
+        "command": "mcp-inspector.cleanNpmCache",
+        "title": "清理 MCP Inspector npm 缓存和依赖"
       }
     ],
     "viewsContainers": {
@@ -48,6 +52,36 @@
           "name": "MCP Inspector"
         }
       ]
+    },
+    "configuration": {
+      "title": "MCP Inspector",
+      "properties": {
+        "mcp-inspector.serverPort": {
+          "type": "number",
+          "default": 3000,
+          "description": "MCP Inspector 服务器使用的端口号。如果该端口不可用，将自动寻找其他可用端口。"
+        },
+        "mcp-inspector.autoStartServer": {
+          "type": "boolean",
+          "default": true,
+          "description": "扩展激活时是否自动启动 MCP Inspector 服务器。"
+        },
+        "mcp-inspector.installDependencies": {
+          "type": "boolean",
+          "default": true,
+          "description": "首次启动服务器时是否自动安装缺失的依赖项。"
+        },
+        "mcp-inspector.preInitializeOnActivation": {
+          "type": "boolean",
+          "default": true,
+          "description": "插件激活时是否自动在后台安装依赖和构建服务器，可以加快首次启动速度。"
+        },
+        "mcp-inspector.serverStartTimeout": {
+          "type": "number",
+          "default": 30000,
+          "description": "服务器启动超时时间（毫秒）。"
+        }
+      }
     }
   },
   "scripts": {

@@ -46,13 +46,26 @@ npm run package
 - `MCP Inspector: 打开 MCP Inspector` - 打开主界面
 - `MCP Inspector: 启动 MCP Inspector 服务器` - 启动代理服务器
 - `MCP Inspector: 停止 MCP Inspector 服务器` - 停止代理服务器
+- `MCP Inspector: 清理 NPM 缓存和依赖` - 当安装出现问题时清理npm缓存和依赖
 
-## 扩展设置
+### 扩展设置
 
-目前此扩展没有可配置的设置项。未来版本可能会添加以下设置：
+本扩展提供以下设置项：
 
-- `mcpInspector.defaultPort`: 设置默认端口号
-- `mcpInspector.autoStartServer`: 启动扩展时自动启动服务器
+- `mcp-inspector.serverPort`: MCP Inspector 服务器使用的端口号（默认：3000）。如果该端口不可用，将自动寻找其他可用端口。
+- `mcp-inspector.autoStartServer`: 扩展激活时是否自动启动 MCP Inspector 服务器（默认：true）。
+- `mcp-inspector.installDependencies`: 首次启动服务器时是否自动安装缺失的依赖项（默认：true）。
+- `mcp-inspector.preInitializeOnActivation`: 插件激活时是否自动在后台安装依赖和构建服务器（默认：true）。这将加快首次启动服务器的速度。
+- `mcp-inspector.serverStartTimeout`: 服务器启动超时时间（毫秒）（默认：30000）。
+
+## 故障排除
+
+如果您在启动服务器时遇到问题：
+
+1. 尝试使用命令面板中的"清理 MCP Inspector npm 缓存和依赖"命令
+2. 查看 MCP Inspector 输出通道获取详细的错误信息
+3. 确保 Node.js 和 npm 已正确安装并可访问
+4. 如果出现权限问题，尝试以管理员权限运行 VSCode
 
 ## 项目结构
 
